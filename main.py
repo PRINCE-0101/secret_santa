@@ -192,6 +192,11 @@ def signup(data: SignupInput):
         if data.organizer_code:
             if not ADMIN_INVITE_CODE or not hmac.compare_digest(data.organizer_code, ADMIN_INVITE_CODE):
                 raise HTTPException(status_code=403, detail="Invalid organizer invite code")
+            existing_organizer = conn.execute(
+                "SELECT 1 FROM users WHERE role='organizer' LIMIT 1"
+            ).fetchone()
+            if existing_organizer:
+                raise HTTPException(status_code=409, detail="An organizer is already registered")
             role = "organizer"
         try:
             cur = conn.execute("INSERT INTO users(name,email,password_hash,role) VALUES(?,?,?,?)",

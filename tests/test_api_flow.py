@@ -12,6 +12,12 @@ def test_draw_lock_and_private_giftee_wishlists(tmp_path, monkeypatch):
             "name": "Organizer", "email": "org@example.com", "password": "organizer-password",
             "organizer_code": "organizer-code",
         }).json()
+        duplicate_organizer = client.post("/auth/signup", json={
+            "name": "Second Organizer", "email": "org2@example.com", "password": "organizer-password",
+            "organizer_code": "organizer-code",
+        })
+        assert duplicate_organizer.status_code == 409
+
         people = []
         for name in ["Aanya", "Kabir", "Riya"]:
             result = client.post("/auth/signup", json={

@@ -18,13 +18,20 @@ Requires Python 3.10 or newer.
 ```bash
 cd secret-santa
 python -m venv .venv
-# Windows: .venv\\Scripts\\activate
-# macOS/Linux:
+```
+
+Activate the environment, then install dependencies:
+
+```bash
+# macOS/Linux
 source .venv/bin/activate
+# Windows PowerShell
+.venv\Scripts\Activate.ps1
+
 pip install -r requirements.txt
 ```
 
-Copy `.env.example` to `.env`, then replace both values with private random secrets. The app loads `.env` automatically. `JWT_SECRET` must be at least 32 characters; `ADMIN_INVITE_CODE` must be at least 12 characters.
+Copy `.env.example` to `.env` (`cp .env.example .env` on macOS/Linux, or `Copy-Item .env.example .env` in PowerShell). Replace both values with private random secrets. The app loads `.env` automatically. `JWT_SECRET` must be at least 32 characters; `ADMIN_INVITE_CODE` must be at least 12 characters. Only the first organizer signup is accepted.
 
 ```bash
 uvicorn main:app --reload
